@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// const { Video } = require("../models/Video");
+const { Video } = require("../models/Video");
 const multer = require("multer");
 const { auth } = require("../middleware/auth");
 var ffmpeg = require("fluent-ffmpeg");
@@ -25,7 +25,7 @@ let storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single("file");
 
-//Video
+//upload files
 router.post("/uploadfiles", (req, res) => {
   // save the video from client by using multer
   upload(req, res, (err) => {
@@ -39,6 +39,40 @@ router.post("/uploadfiles", (req, res) => {
       });
     }
   });
+});
+
+//submit video
+router.post("/uploadVideo", (req, res) => {
+  const video = new Video(req.body);
+  // save all info about video to DB
+
+  video.save((err, doc) => {
+    console.log(err);
+    if (err) return res.json({ success: false, err });
+
+    return res.status(200).json({ success: true });
+  });
+});
+
+//display video to frontend
+router.get("/getVideo", (req, res) => {
+  //  get videos from DB and send them to client
+  Video.find()
+    .populate("videoWriter")
+    .exec((err, videos) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).json({ success: true, videos });
+    });
+});
+
+//video detail
+router.post("/getVideoDetail", (req, res) => {
+  Video.findOne({ _id: req.body.videoId })
+    .populate("videoWriter")
+    .exec((err, videoDetail) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).json({ success: true, videoDetail });
+    });
 });
 
 //thumbnail
