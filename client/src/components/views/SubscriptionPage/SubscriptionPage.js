@@ -6,17 +6,23 @@ import moment from "moment";
 const { Title } = Typography;
 const { Meta } = Card;
 
-function LandingPage() {
+function SubscriptionPage() {
+  let subscriptionVariable = {
+    userFrom: localStorage.getItem("userId"),
+  };
+
   const [Video, setVideo] = useState([]);
   useEffect(() => {
-    Axios.get("/api/video/getVideo").then((response) => {
-      if (response.data.success) {
-        console.log(response.data);
-        setVideo(response.data.videos);
-      } else {
-        alert("failed to get the videos");
+    Axios.post("/api/video/getSubscriptionVideo", subscriptionVariable).then(
+      (response) => {
+        if (response.data.success) {
+          console.log(response.data);
+          setVideo(response.data.video);
+        } else {
+          alert("failed to get the videos");
+        }
       }
-    });
+    );
   }, []);
 
   const renderCard = Video.map((item, index) => {
@@ -69,11 +75,11 @@ function LandingPage() {
   });
   return (
     <div style={{ width: "85%", margin: "3rem auto" }}>
-      <Title level={2}>Recomended Videos</Title>
+      <Title level={2}>Subcribed Videos</Title>
       <hr />
       <Row gutter={[32, 16]}>{renderCard}</Row>
     </div>
   );
 }
 
-export default LandingPage;
+export default SubscriptionPage;

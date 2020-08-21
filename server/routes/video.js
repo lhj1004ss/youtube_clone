@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { Video } = require("../models/Video");
+
 const multer = require("multer");
+const { Subscriber } = require("../models/Subscriber");
 const { auth } = require("../middleware/auth");
 var ffmpeg = require("fluent-ffmpeg");
 // multer configuration
@@ -73,6 +75,31 @@ router.post("/getVideoDetail", (req, res) => {
       if (err) return res.status(400).send(err);
       return res.status(200).json({ success: true, videoDetail });
     });
+});
+
+//get subscription video
+router.post("/getSubscriptionVideo", (req, res) => {
+  // find subscribers by using their id
+
+  Subscriber.find({ userFrom: req.body.userFrom }).exec((err, subscribers) => {
+    if (err) return res.status(400).send(err);
+
+    // subscriberInfo saves into subscriberuser array
+    let subscribedUser = [];
+
+    subscribers.map((subscriber, i) => {
+      subscribedUser.push(subscriber.userTo);
+    });
+
+    // and then bring their videos
+
+    Video.find({ videoWriter: { $in: subscribedUser } })
+      .populate("videoWriter")
+      .exec((err, video) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, video });
+      });
+  });
 });
 
 //thumbnail
