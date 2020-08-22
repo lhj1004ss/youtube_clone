@@ -30,6 +30,7 @@ function SingleComment(props) {
       if (response.data.success) {
         console.log(response.data.result);
         setCommentValue("");
+        setOpenReply(false);
         props.refreshFunction(response.data.result);
       } else {
         alert("failed to save comment");

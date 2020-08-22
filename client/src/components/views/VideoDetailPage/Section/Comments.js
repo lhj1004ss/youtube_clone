@@ -39,20 +39,6 @@ function Comment(props) {
       <hr />
       {/* comment list (single comment) */}
 
-      {/* {props.commentList &&
-        props.commentList.map((comment, index) => {
-          <React.Fragment>
-            !comment.responseTo && (
-            <SingleComment
-              key={index}
-              refreshFunction={props.refreshFunction}
-              comment={comment}
-              videoId={videoId}
-            />
-            );
-          </React.Fragment>;
-        })} */}
-
       {props.commentList &&
         props.commentList.map(
           (comment, index) =>
@@ -64,7 +50,12 @@ function Comment(props) {
                   comment={comment}
                   postId={videoId}
                 />
-                <ReplyComment />
+                <ReplyComment
+                  postId={videoId}
+                  parentCommentId={comment._id}
+                  commentList={props.commentList}
+                  refreshFunction={props.refreshFunction}
+                />
               </React.Fragment>
             )
         )}
