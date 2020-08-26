@@ -17,12 +17,11 @@ function ReplyComment(props) {
   }, [props.commentList]);
 
   const renderReplyComment = (parentCommentId) => {
-    props.commentList.map((comment, index) => (
+    return props.commentList.map((comment, index) => (
       <React.Fragment>
         {comment.responseTo === parentCommentId && (
-          <div style={{ width: "80%", marginLeft: "30px" }}>
+          <div style={{ width: "80%", marginLeft: "40px" }}>
             <SingleComment
-              key={index}
               refreshFunction={props.refreshFunction}
               comment={comment}
               postId={props.videoId}
@@ -38,19 +37,21 @@ function ReplyComment(props) {
       </React.Fragment>
     ));
   };
+
   const onHandleChange = () => {
     setOpenReplyComment(!OpenReplyComment);
     console.log(OpenReplyComment);
   };
+
   return (
     <div>
       {ChildCommentNumber > 0 && (
-        <p
-          style={{ fontSize: "14px", margin: 0, color: "grey" }}
+        <button
+          style={{ fontSize: "14px", margin: 0, color: "gray" }}
           onClick={onHandleChange}
         >
           View {ChildCommentNumber} more comment(s)
-        </p>
+        </button>
       )}
 
       {OpenReplyComment && renderReplyComment(props.parentCommentId)}

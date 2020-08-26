@@ -9,7 +9,6 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 import VideoUploadPage from "./views/VideoUploadPage/VideoUploadPage";
 import VideoDetailPage from "./views/VideoDetailPage/VideoDetailPage";
-import SubcriptionPage from "./views/SubscriptionPage/SubscriptionPage";
 import SubscriptionPage from "./views/SubscriptionPage/SubscriptionPage";
 //null   Anyone Can go inside
 //true   only logged in user can go inside

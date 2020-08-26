@@ -16,6 +16,7 @@ function Comment(props) {
   const onSubmit = (e) => {
     const variable = {
       content: CommentValue,
+      // user from redux
       commentWriter: user.userData._id,
       postId: videoId,
     };
